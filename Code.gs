@@ -19,23 +19,7 @@ function doPost(e) {
 }
 
 function doGet(e) {
-  try {
-    if (!e || !e.parameter || e.parameter.action !== 'results') return json_({ok:true,message:'Survey API is running.'});
-    const sheet = getSheet_();
-    ensureHeaders_(sheet);
-    const values = sheet.getDataRange().getValues();
-    const headers = values.shift() || HEADERS;
-    const rows = values.filter(row => row.some(value => value !== '')).map(row => {
-      const item = {};
-      headers.forEach((key,index) => {
-        const value = row[index];
-        if (key === 'timestamp') item[key] = value instanceof Date ? value.toISOString() : String(value || '');
-        else item[key] = ['q4_games','q5_recent','q6_reasons'].includes(key) ? (value ? String(value).split(' | ') : []) : String(value == null ? '' : value);
-      });
-      return item;
-    });
-    return respond_(e,{ok:true,rows:rows});
-  } catch (error) { return respond_(e,{ok:false,error:error.message}); }
+  return json_({ok:false,error:'설문 결과는 공개되지 않습니다.'});
 }
 
 function getSheet_() {
@@ -66,9 +50,4 @@ function normalizeSubmission_(data) {
   }
 }
 function serialize_(value) { return Array.isArray(value) ? value.join(' | ') : (value == null ? '' : value); }
-function respond_(e,payload) {
-  const callback=e&&e.parameter&&e.parameter.callback;
-  if (callback && /^[A-Za-z_$][0-9A-Za-z_$]*$/.test(callback)) return ContentService.createTextOutput(callback+'('+JSON.stringify(payload)+');').setMimeType(ContentService.MimeType.JAVASCRIPT);
-  return json_(payload);
-}
 function json_(payload) { return ContentService.createTextOutput(JSON.stringify(payload)).setMimeType(ContentService.MimeType.JSON); }

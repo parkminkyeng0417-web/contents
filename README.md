@@ -1,6 +1,6 @@
 # 어릴 적 육성·꾸미기 게임에 대한 짧은 설문
 
-세종대학교 콘텐츠 기획 수업 과제를 위해 외부 프레임워크 없이 만든 모바일 대응 설문입니다. `index.html`은 응답을 받고, `results.html`은 익명 집계 결과를 보여 주며, `Code.gs`는 Google Sheets에 응답을 저장하고 결과를 제공합니다.
+세종대학교 콘텐츠 기획 수업 과제를 위해 외부 프레임워크 없이 만든 모바일 대응 설문입니다. `index.html`은 응답을 받고, `Code.gs`는 Google Sheets에 응답을 저장합니다. 응답 원본은 스프레드시트를 소유한 Google 계정에서만 확인하며 공개 결과 API는 제공하지 않습니다.
 
 ## 1. Google Sheets 만들기
 
@@ -46,9 +46,9 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/배포_ID/exec';
 3. Q4에서 `해본 적 없다`, Q5에서 `없다`가 다른 보기와 동시에 선택되지 않는지 확인합니다.
 4. Q5에서 `없다`를 고르면 Q6을 건너뛰고 Q7로 이동하는지 확인합니다.
 5. Google Sheets에 `응답` 탭과 새 행이 생겼는지 확인합니다.
-6. `results.html`에서 응답 수, Q7 평균, 이용·구매 긍정 비율과 문항별 분포를 확인합니다.
+6. Google Sheets의 `응답` 탭에서 제출된 응답을 확인합니다. 시트를 공유하지 않으면 소유자만 볼 수 있습니다.
 
-결과를 못 읽으면 웹 앱 공개 범위가 `모든 사용자`인지, 두 HTML 파일에 `/exec` URL을 넣었는지 확인합니다.
+응답이 저장되지 않으면 웹 앱 공개 범위가 `모든 사용자`인지, `index.html`에 `/exec` URL을 넣었는지 확인합니다.
 
 ## 5. GitHub Pages 배포
 
@@ -57,13 +57,11 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/배포_ID/exec';
 3. Source에서 `Deploy from a branch`를 고릅니다.
 4. Branch는 `main`, 폴더는 `/(root)`를 선택하고 **Save**를 누릅니다.
 5. 몇 분 뒤 표시되는 `https://사용자명.github.io/저장소명/` 주소로 접속합니다.
-6. 결과 페이지 주소는 공개 주소 뒤에 `results.html`을 붙인 주소입니다.
-
-공개 저장소에서는 결과 페이지 주소를 아는 사람이 집계 결과를 볼 수 있습니다. 현재 설문처럼 이름과 이메일 등 개인정보를 받지 않는 구성을 권장합니다.
+6. GitHub Pages에는 설문 페이지인 `index.html`만 배포됩니다. 결과는 Google Sheets에서 확인합니다.
 
 ## 파일 구성
 
 - `index.html`: 10문항 설문, 필수 검증, 조건부 이동, 제출
-- `results.html`: 세그먼트 필터, 핵심 지표, 발견점, 문항별 비율, 자유 의견 및 CSV 다운로드
-- `Code.gs`: Google Sheets 저장 및 결과 API
+- `results.html`: 로컬 분석용 대시보드이며 GitHub Pages에는 배포하지 않음
+- `Code.gs`: Google Sheets 저장 및 공개 결과 조회 차단
 - `README.md`: 설치와 배포 안내
